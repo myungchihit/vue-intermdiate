@@ -4,14 +4,29 @@
       <span class="addContainer" v-on:click="addTodo">
         <i class="fa-solid fa-plus addBtn"></i>
       </span>
+      <Modal v-if="showModal" @close="showModal = false">
+        <!--
+            you can use custom content here to overwrite
+            default content
+          -->
+        <h3 slot="header">
+          경고!
+          <i class="closeModalBtn fa-solid fa-circle-xmark" @click="showModal = false"></i>
+        </h3>
+        <h3 slot="body">아무것도 입력하지 않으셨습니다.</h3>
+        <h3 slot="footer">copy right</h3>
+      </Modal>
   </div>
 </template>
 
 <script>
+import Modal from './common/ModalPage.vue';
+
 export default {
   data : function(){
     return {
-      newToDoItem : ""
+      newToDoItem : "",
+      showModal: false
     }
   },
   methods: {
@@ -20,10 +35,16 @@ export default {
         this.$emit('addTodoItem', this.newToDoItem);
         this.clearInput();
       }
+      else{  // 공백란
+        this.showModal = !this.showModal;
+      }
     },
     clearInput : function() {
       this.newToDoItem = '';
     }
+  },
+  components: {
+    Modal: Modal
   }
 }
 </script>
@@ -62,6 +83,10 @@ input:focus {
   cursor: pointer;
   color: white;
   vertical-align: middle;
+}
+
+.closeModalBtn{
+  color: #42b983;
 }
 
 </style>
