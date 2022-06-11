@@ -1,12 +1,13 @@
 <template>
   <div>
       <transition-group name="list" tag="ul">
-        <li v-for="(todoItem , index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow">
+        <li v-for="(todoItem , index) in this.storedTodoItems" 
+            v-bind:key="todoItem.item" class="shadow">
             <i class="checkBtn fa-solid fa-check" 
                v-bind:class="{checkBtnCompleted: todoItem.completed}" 
-               v-on:click="toggleComplete(todoItem, index)"></i>
+               v-on:click="toggleComplete({todoItem, index})"></i>
             <span v-bind:class="{textCompleted : todoItem.completed}">{{ todoItem.item }}</span>
-            <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+            <span class="removeBtn" v-on:click="removeTodo({todoItem, index})">
               <i class="fa-solid fa-trash-can"></i>
             </span>
         </li>
@@ -15,17 +16,28 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   methods: {
-    removeTodo(todoItem, index) {
-      //this.$emit('removeItem',todoItem, index); --> vuex껄 호출
-      this.$store.commit('removeOneItem', { todoItem, index });
-    },
-    toggleComplete(todoItem, index) {
-      //this.$emit('toggleItem', todoItem, index);
-      this.$store.commit('toggleOneItem', { todoItem, index })
-    }
+    ...mapMutations({
+      // 여기서 인자를 선언안해도 위에서 v-on:click에 객체로 묶어서 파라미터를 넘기면 알아서 넘어감
+      // 2개 이상일시 꼭 객체로 넘겨준다.
+      removeTodo: 'removeOneItem',
+      toggleComplete : 'toggleOneItem'
+    }),
+    // removeTodo(todoItem, index) {
+    //   //this.$emit('removeItem',todoItem, index); --> vuex껄 호출
+    //   this.$store.commit('removeOneItem', { todoItem, index });
+    // },
+    // toggleComplete(todoItem, index) {
+    //   //this.$emit('toggleItem', todoItem, index);
+    //   this.$store.commit('toggleOneItem', { todoItem, index })
+    // }
   },
+  computed : {
+    ...mapGetters(['storedTodoItems'])
+  }
 }
 </script>
 
