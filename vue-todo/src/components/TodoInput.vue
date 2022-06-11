@@ -32,7 +32,8 @@ export default {
   methods: {
     addTodo() {
       if(this.newToDoItem !== ''){
-        this.$emit('addTodoItem', this.newToDoItem);
+        //this.$emit('addTodoItem', this.newToDoItem);
+        this.$store.commit('addOneItem', this.newToDoItem);
         this.clearInput();
       }
       else{  // 공백란
