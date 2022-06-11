@@ -16,10 +16,10 @@ import TodoFooter from './components/TodoFooter.vue';
 
 export default {
   components : {
-    'TodoHeader' : TodoHeader,
-    'TodoInput' : TodoInput,
-    'TodoList' : TodoList,
-    'TodoFooter' : TodoFooter
+    TodoHeader,
+    TodoInput,
+    TodoList,
+    TodoFooter
   },
   data() {
     return {
